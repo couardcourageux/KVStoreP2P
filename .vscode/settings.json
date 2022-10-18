@@ -1,6 +1,8 @@
 {
     "python.analysis.extraPaths": [
         "./memory",
-        "./pathsMethods"
+        "./pathsMethods",
+        "./apiTypes",
+        "./internalTypes"
     ]
 }

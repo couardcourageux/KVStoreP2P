@@ -6,6 +6,10 @@ import typing
 from registryEntry import RegisterEntry
 from DBerrors import KeyNotFound, UnauthorizedReading, UnauthorizedWriting
 
+
+
+
+
 @dataclass
 class Response:
     status: int
