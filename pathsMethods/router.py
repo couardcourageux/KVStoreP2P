@@ -12,16 +12,7 @@ class Router:
     @classmethod
     def main(self):
         return MockDatabase.size
-    
-    
-    
-    # @classmethod
-    # def getEntries(self):
-    #     resps = []
-    #     for i in range(5):
-    #         resps.append(MockDatabase.getEntry(f"test{i}"))
-    #     return resps
-    
+       
     
     @classmethod
     def setEntry(self, pe: PutEntryDtc) -> CustomrResp:
