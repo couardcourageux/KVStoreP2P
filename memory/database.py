@@ -13,19 +13,24 @@ class Response:
     errors: List[Exception] = field(default_factory=list)
 
 
-@dataclass
+
 class MockDatabase:
     
-    __data: Dict[str, RegisterEntry] = field(default_factory=dict, repr=False)
-    __size:int = 0
+    __data = {}
+    __size = 0
     
+    
+    @classmethod
     def refresh_size(self):
         self.__size = len(self.__data.keys())
-        
+    
+    @classmethod
     @property
     def size(self):
         return self.__size
     
+    
+    @classmethod
     def getEntry(self, key: str, user_id="12") -> Response:
         
         entry = self.__data.get(key, None)
@@ -45,6 +50,8 @@ class MockDatabase:
                             errors=[UnauthorizedReading(key, user_id)]
                             )
     
+    
+    @classmethod
     def setEntry(self, key:str, value:str, user_id:str="12", rights:Tuple[int, int]=(0, 0)) -> Response:
         entry = self.__data.get(key, None)
         if entry is None:
@@ -64,6 +71,7 @@ class MockDatabase:
                     return Response(status=1, data=f"{key} failed to be added", errors=[UnauthorizedWriting(key, user_id)])
         return Response(status=0, data=f"{key} successfully added")
     
+    @classmethod
     def popEntry(self, key:str, user_id:str="12") -> Response:
         entry = self.__data.get(key, None)
         if entry is None:

@@ -1,35 +1,40 @@
+import sys
+import os
 
+LOCAL_DIRECTORY = os.getcwd()
+sys.path.append(os.path.join(LOCAL_DIRECTORY, "memory"))
+from database import MockDatabase
 
 
 class Router:  
     @classmethod
-    def main(self, db):
-        return db.size
+    def main(self):
+        return MockDatabase.size
     
     @classmethod
-    def initial(self, db):
+    def initial(self):
         resps = []
         for i in range(5):
-            resps.append(db.setEntry(f"test{i}", "oh, un super test"))
+            resps.append(MockDatabase.setEntry(f"test{i}", "oh, un super test"))
         return resps
     
     @classmethod
-    def secondStep(self, db):
+    def secondStep(self):
         resps = []
         for i in range(5, 12):
-            resps.append(db.setEntry(f"test{i}", "oh, un super test"))
+            resps.append(MockDatabase.setEntry(f"test{i}", "oh, un super test"))
         return resps
     
     @classmethod
-    def getEntries(self, db):
+    def getEntries(self):
         resps = []
         for i in range(5):
-            resps.append(db.getEntry(f"test{i}"))
+            resps.append(MockDatabase.getEntry(f"test{i}"))
         return resps
     
     @classmethod
-    def deleteEntries(self, db):
+    def deleteEntries(self):
         resps = []
         for i in range(5):
-            resps.append(db.popEntry(f"test{i}"))
+            resps.append(MockDatabase.popEntry(f"test{i}"))
         return resps

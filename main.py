@@ -1,27 +1,32 @@
+import sys
+import os
+
+LOCAL_DIRECTORY = os.getcwd()
+sys.path.append(os.path.join(LOCAL_DIRECTORY, "pathsMethods"))
+###
+
 from fastapi import FastAPI
-# from multiprocessing import Manager
 
-from globalDetainer import GlobalDetainer
-
+from router import Router
 
 
 app = FastAPI()
 @app.get("/")
 async def read_root():
-    return GlobalDetainer.main()
+    return Router.main()
 
 @app.get("/init")
 async def read_root():
-    return GlobalDetainer.initial()
+    return Router.initial()
 
 @app.get("/sec")
 async def read_root():
-    return GlobalDetainer.secondStep()
+    return Router.secondStep()
 
 @app.get("/get")
 async def read_root():
-    return GlobalDetainer.getEntries()
+    return Router.getEntries()
 
 @app.get("/del")
 async def read_root():
-    return GlobalDetainer.deleteEntries()
+    return Router.deleteEntries()
