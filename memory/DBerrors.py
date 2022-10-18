@@ -1,5 +1,6 @@
 
 from dataclasses import dataclass
+from typing import Tuple
 
 
 class KeyNotFound(Exception):
@@ -10,7 +11,7 @@ class KeyNotFound(Exception):
     
     def __init__(self, key: str) -> None:
         self.key = key
-        self.message = f"key {key} not found"
+        self.message = f"key {self.key} not found"
         super().__init__(self.message)
         
 class UnauthorizedReading(Exception):
@@ -19,10 +20,10 @@ class UnauthorizedReading(Exception):
     :param str Exception: the key in question
     :param indent Exception: the the user id
     """
-    def __init__(self, key: str, ident: str) -> None:
-        self.key = key
-        self.id = ident
-        self.message = f"user {ident} have no read access over the key {key}"
+    def __init__(self, inf:Tuple[str, str]) -> None:
+        self.key = inf[0]
+        self.id = inf[1]
+        self.message = f"user {self.id} have no read access over the key {self.key}"
         super().__init__(self.message)
         
 class UnauthorizedWriting(Exception):
@@ -31,12 +32,9 @@ class UnauthorizedWriting(Exception):
     :param str Exception: the key in question
     :param indent Exception: the the user id
     """
-    def __init__(self, key: str, ident: str) -> None:
-        self.key = key
-        self.id = ident
-        self.message = f"user {ident} have no write access over the key {key}"
+    def __init__(self, inf:Tuple[str, str]) -> None:
+        self.key = inf[0]
+        self.id = inf[1]
+        self.message = f"user {self.id} have no write access over the key {self.key}"
         super().__init__(self.message)
 
-
-a = KeyNotFound("22")
-print(a, type(a))
