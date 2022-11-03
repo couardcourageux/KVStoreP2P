@@ -3,6 +3,8 @@
         "./memory",
         "./pathsMethods",
         "./apiTypes",
-        "./internalTypes"
+        "./internalTypes",
+        "./pyProtos",
+        "./networking"
     ]
 }

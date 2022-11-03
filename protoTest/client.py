@@ -11,6 +11,8 @@ def run():
         req.token = "yolo"
         resp = stub.obtainId(req)
         print(resp)
+        print(resp.agentId)
+        print(resp.nodeId)
         
         
 if __name__ == '__main__':

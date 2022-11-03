@@ -6,6 +6,9 @@ sys.path.append(os.path.join(LOCAL_DIRECTORY, "pathsMethods"))
 sys.path.append(os.path.join(LOCAL_DIRECTORY, "apiTypes"))
 sys.path.append(os.path.join(LOCAL_DIRECTORY, "networking"))
 ###
+import uvicorn
+import argparse
+
 
 from fastapi import FastAPI
 
@@ -15,7 +18,7 @@ from putRequests import SetEntry,SetEntries, DelGetEntry
 from localAgent import LocalAgent
 
 
-LocalAgent.serveGRPC()
+
 app = FastAPI()
 @app.get("/")
 async def read_root():
@@ -43,3 +46,25 @@ async def delEntry(req: DelGetEntry):
 @app.on_event('shutdown')
 def shutdown_event():
     LocalAgent.closeServers()
+    
+    
+    
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--aport', type=int, required=True)
+    parser.add_argument('--gport', type=str, required=True)
+    parser.add_argument('--join', type=str, required=False)
+    
+    args = parser.parse_args()
+    
+    
+    if args.join:
+        LocalAgent.joinNetwork(args.join)
+        # print(LocalAgent.__agent)
+    else:
+        LocalAgent.initAgent(args.gport)
+    
+    host = "localhost:{}".format(args.gport)
+    LocalAgent.serveGRPC(host)
+    
+    uvicorn.run("main:app", host="0.0.0.0", port=args.aport, reload=True)
