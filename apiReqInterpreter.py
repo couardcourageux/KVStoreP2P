@@ -11,8 +11,6 @@ from putRequests import SetEntry, SetEntries, SetEntryBase, DelGetEntry
 from routerArgs import PutEntryDtc, PutEntriesDtc, DelGetEntryDtc
 
 class ApiReqInterpret:
-    
-    
     ### SetEntry Family############
 
     @classmethod

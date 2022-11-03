@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package Ring;
+
+service Node2Node {
+
+    rpc obtainId(IDReqMsg) returns (IDReqRespMsg) {}
+}
+
+
+
+message IDReqMsg {
+    string token = 1;
+}
+
+
+
+message IDReqRespMsg {
+    int64 errorCode = 1;
+    string agentId = 2;
+    string nodeId = 3;
+}
