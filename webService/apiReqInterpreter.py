@@ -3,8 +3,11 @@ import sys
 import os
 
 LOCAL_DIRECTORY = os.getcwd()
-sys.path.append(os.path.join(LOCAL_DIRECTORY, "apiTypes"))
-sys.path.append(os.path.join(LOCAL_DIRECTORY, "internalTypes"))
+WEB_SERVICE = os.path.join(LOCAL_DIRECTORY, "webService")
+
+
+sys.path.append(os.path.join(WEB_SERVICE, "apiTypes"))
+sys.path.append(os.path.join(WEB_SERVICE, "pathMethods"))
 ###
 
 from putRequests import SetEntry, SetEntries, SetEntryBase, DelGetEntry

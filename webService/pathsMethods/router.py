@@ -3,7 +3,7 @@ import os
 
 LOCAL_DIRECTORY = os.getcwd()
 sys.path.append(os.path.join(LOCAL_DIRECTORY, "memory"))
-sys.path.append(os.path.join(LOCAL_DIRECTORY, "internalTypes"))
+
 
 from database import MockDatabase, CustomrResp
 from routerArgs import PutEntryDtc, PutEntriesDtc, DelGetEntryDtc

@@ -2,8 +2,10 @@ import sys
 import os
 
 LOCAL_DIRECTORY = os.getcwd()
-sys.path.append(os.path.join(os.path.join(LOCAL_DIRECTORY, "webService"), "pathsMethods"))
-sys.path.append(os.path.join(LOCAL_DIRECTORY, "apiTypes"))
+WEB_SERVICE = os.path.join(LOCAL_DIRECTORY, "webService")
+
+sys.path.append(os.path.join(WEB_SERVICE, "pathsMethods"))
+sys.path.append(os.path.join(WEB_SERVICE, "apiTypes"))
 sys.path.append(os.path.join(LOCAL_DIRECTORY, "networking"))
 ###
 import uvicorn
@@ -12,7 +14,7 @@ import argparse
 
 from fastapi import FastAPI
 
-from apiReqInterpreter import ApiReqInterpret
+from webService.apiReqInterpreter import ApiReqInterpret
 from router import Router
 from putRequests import SetEntry,SetEntries, DelGetEntry
 from localAgent import LocalAgent
