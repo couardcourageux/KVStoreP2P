@@ -58,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument('--join', type=str, required=False)
     
     args = parser.parse_args()
-    
+        
     
     if args.join:
         LocalAgent.joinNetwork(args.join)

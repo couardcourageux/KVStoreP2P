@@ -10,7 +10,10 @@ class Agent:
     agent_id: str
     ip: str
     port: str
-    hosting: Dict[str, 'DNode'] = field(default_factory=dict, repr=False)
+    hosting: 'DNode' = None
+    
+    def show(self):
+        print(f"agent: {self.agent_id[:20]}, hosting node {self.hosting.dNode_id[:20]}")
     
     
     
@@ -18,7 +21,7 @@ class Agent:
 class DNode:
     dNode_id: str
     predecessor: 'DNode' = field(repr=False)
-    agents: Dict[str,   'Agent'] = field(default_factory=dict, repr=False)
+    agents: Dict[str, 'Agent'] = field(default_factory=dict, repr=False)
     fingerTable: Dict[str, 'DNode'] = field(default_factory=dict, repr=False)
     
     

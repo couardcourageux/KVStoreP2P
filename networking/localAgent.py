@@ -1,23 +1,24 @@
-from dataclasses import dataclass, field
-from typing import List, Dict
+import sys
+import os
 
-import grpc
-from concurrent import futures
-from multiprocessing import Process
+LOCAL_DIRECTORY = os.getcwd()
+GRPC_DIR = os.path.join(LOCAL_DIRECTORY, "grpc")
 
-from nClasses import Agent, DNode
+sys.path.append(GRPC_DIR)
+sys.path.append(os.path.join(GRPC_DIR, "pyProtos"))
+sys.path.append(os.path.join(GRPC_DIR, "clients"))
 
-from ringServicer import RingServicer
-import ring_pb2_grpc
-import ring_pb2
-from networking_lib import create_agent_id, create_node_id, join_network
 
+from agent_and_dnode import Agent, DNode
+from utilitary import create_agent_id, create_node_id
+from ringClient import RingClient
 
 class LocalAgent:
+    __agent = Agent("need init", "localhost", "00")
+    __grpcServer = None
     
-    __agent = Agent("need_init", "localhost", "00")
-    __grpcServer = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    __grpcsServProc = None
+    def getAgent():
+        return LocalAgent.__agent
     
     @classmethod
     def _setAgent(self, id:str, port:str):
@@ -26,56 +27,19 @@ class LocalAgent:
         self.__agent.port = port
         
     @classmethod
-    def initAgent(self, port: str):
-        self._setAgent(create_agent_id(), port)
-
-        
-    @classmethod
     def initNetwork(self, port: str):
         self._setAgent(create_agent_id(), port)
         dNode = DNode(create_node_id(), None, [self.__agent])
-        self.__agent.hosting[dNode.dNode_id] = dNode
+        dNode.predecessor = dNode
+        self.__agent.hosting = dNode
         
     @classmethod
     def showMe(self):
-        print(self.__agent.hosting)
-        
-        
+        self.__agent.show()
         
     @classmethod
     def joinNetwork(self, distantAgentHost: str):
-        agent_id, node_id = join_network(distantAgentHost)
+        agent_id, node_id = RingClient.join_network(distantAgentHost)
         print(f"joining network: agent_id: {agent_id[:20]}")
+        print(f"will request for adress of {node_id[:20]}")
         self.__agent.agent_id = agent_id
-
-
-
-    @classmethod
-    def _serveGRPC(self, host):
-        ring_pb2_grpc.add_Node2NodeServicer_to_server(RingServicer(), self.__grpcServer)
-        self.__grpcServer.add_insecure_port(host)
-        self.__grpcServer.start()
-        self.__grpcServer.wait_for_termination()
-      
-    @classmethod  
-    def serveGRPC(self, host):
-        self.__grpcsServProc = Process(target=self._serveGRPC, args=(host,))
-        self.__grpcsServProc.start()
-    
-    @classmethod
-    def closeServers(self):
-            self.__grpcsServProc.terminate()
-        
-
-
-
-
-
-
-
-
-
-
-     
-if __name__ == '__main__':
-    LocalAgent.serveGRPC()

@@ -7,6 +7,10 @@
         "./pyProtos",
         "./networking",
         "./webService/pathsMethods",
-        "./webService/apiTypes"
+        "./webService/apiTypes",
+        "./grpc/servicers",
+        "./grpc/pyProtos",
+        "./grpc/clients",
+        "./grpc"
     ]
 }
