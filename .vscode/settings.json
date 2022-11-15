@@ -5,6 +5,8 @@
         "./apiTypes",
         "./internalTypes",
         "./pyProtos",
-        "./networking"
+        "./networking",
+        "./webService/pathsMethods",
+        "./webService/apiTypes"
     ]
 }
