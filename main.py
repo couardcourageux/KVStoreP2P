@@ -2,7 +2,7 @@ import sys
 import os
 
 LOCAL_DIRECTORY = os.getcwd()
-sys.path.append(os.path.join(LOCAL_DIRECTORY, "pathsMethods"))
+sys.path.append(os.path.join(os.path.join(LOCAL_DIRECTORY, "webService"), "pathsMethods"))
 sys.path.append(os.path.join(LOCAL_DIRECTORY, "apiTypes"))
 sys.path.append(os.path.join(LOCAL_DIRECTORY, "networking"))
 ###
@@ -62,7 +62,8 @@ if __name__ == "__main__":
         LocalAgent.joinNetwork(args.join)
         # print(LocalAgent.__agent)
     else:
-        LocalAgent.initAgent(args.gport)
+        LocalAgent.initNetwork(args.gport)
+        LocalAgent.showMe()
     
     host = "localhost:{}".format(args.gport)
     LocalAgent.serveGRPC(host)

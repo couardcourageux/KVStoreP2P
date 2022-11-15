@@ -10,7 +10,7 @@ from nClasses import Agent, DNode
 from ringServicer import RingServicer
 import ring_pb2_grpc
 import ring_pb2
-from networking_lib import create_agent_id, join_network
+from networking_lib import create_agent_id, create_node_id, join_network
 
 
 class LocalAgent:
@@ -18,11 +18,7 @@ class LocalAgent:
     __agent = Agent("need_init", "localhost", "00")
     __grpcServer = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     __grpcsServProc = None
-
-
-
-
-
+    
     @classmethod
     def _setAgent(self, id:str, port:str):
         self.__agent.agent_id = id
@@ -32,7 +28,18 @@ class LocalAgent:
     @classmethod
     def initAgent(self, port: str):
         self._setAgent(create_agent_id(), port)
-        print(f"auto init with agent_id:{self.__agent.agent_id[:20]}")
+
+        
+    @classmethod
+    def initNetwork(self, port: str):
+        self._setAgent(create_agent_id(), port)
+        dNode = DNode(create_node_id(), None, [self.__agent])
+        self.__agent.hosting[dNode.dNode_id] = dNode
+        
+    @classmethod
+    def showMe(self):
+        print(self.__agent.hosting)
+        
         
         
     @classmethod
