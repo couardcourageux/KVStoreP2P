@@ -9,7 +9,7 @@ sys.path.append(os.path.join(GRPC_DIR, "pyProtos"))
 
 
 import grpc
-from typing import Tuple
+from typing import Tuple, Dict
 
 
 import ring_pb2_grpc
@@ -32,3 +32,39 @@ class RingClient:
             resp = stub.obtainId(req)
         
         return resp.agentId, resp.nodeId
+    
+    @classmethod
+    def searchAddr(self, distantAgentHost: str, NodeId:str) -> Dict:
+        with grpc.insecure_channel(distantAgentHost) as ch:
+            stub = ring_pb2_grpc.Node2NodeStub(ch)
+            req = ring_pb2.IdRingMsg()
+            req.ringId = NodeId
+            resp = stub.findAddr(req)
+            
+        dict = {
+            "nodeId": resp.NodeId,
+            "master": {
+                "agentId": resp.master.agentId,
+                "ip": resp.master.ip,
+                "port": resp.master.port,
+            },
+            "backup": {
+                "agentId": resp.backup.agentId,
+                "ip": resp.backup.ip,
+                "port": resp.backup.port,
+            }
+        }
+        print(dict)
+        return dict
+    
+    @classmethod
+    def joinNode(self, distantAgentHost:str, agentId:str, agentIp:str, agentPort:str) :
+        with grpc.insecure_channel(distantAgentHost) as ch:
+            stub = ring_pb2_grpc.Node2NodeStub(ch)
+            req = ring_pb2.IpPortMsg()
+            req.agentId = agentId
+            req.ip = agentIp
+            req.port = agentPort
+            resp = stub.joinReq(req)
+            
+        print(resp)

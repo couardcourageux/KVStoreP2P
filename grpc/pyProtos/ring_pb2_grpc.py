@@ -19,12 +19,34 @@ class Node2NodeStub(object):
                 request_serializer=ring__pb2.IDReqMsg.SerializeToString,
                 response_deserializer=ring__pb2.IDReqRespMsg.FromString,
                 )
+        self.findAddr = channel.unary_unary(
+                '/Ring.Node2Node/findAddr',
+                request_serializer=ring__pb2.IdRingMsg.SerializeToString,
+                response_deserializer=ring__pb2.NodeAddrMsg.FromString,
+                )
+        self.joinReq = channel.unary_unary(
+                '/Ring.Node2Node/joinReq',
+                request_serializer=ring__pb2.IpPortMsg.SerializeToString,
+                response_deserializer=ring__pb2.ResponseMsg.FromString,
+                )
 
 
 class Node2NodeServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def obtainId(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def findAddr(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def joinReq(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -37,6 +59,16 @@ def add_Node2NodeServicer_to_server(servicer, server):
                     servicer.obtainId,
                     request_deserializer=ring__pb2.IDReqMsg.FromString,
                     response_serializer=ring__pb2.IDReqRespMsg.SerializeToString,
+            ),
+            'findAddr': grpc.unary_unary_rpc_method_handler(
+                    servicer.findAddr,
+                    request_deserializer=ring__pb2.IdRingMsg.FromString,
+                    response_serializer=ring__pb2.NodeAddrMsg.SerializeToString,
+            ),
+            'joinReq': grpc.unary_unary_rpc_method_handler(
+                    servicer.joinReq,
+                    request_deserializer=ring__pb2.IpPortMsg.FromString,
+                    response_serializer=ring__pb2.ResponseMsg.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -62,5 +94,39 @@ class Node2Node(object):
         return grpc.experimental.unary_unary(request, target, '/Ring.Node2Node/obtainId',
             ring__pb2.IDReqMsg.SerializeToString,
             ring__pb2.IDReqRespMsg.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def findAddr(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Ring.Node2Node/findAddr',
+            ring__pb2.IdRingMsg.SerializeToString,
+            ring__pb2.NodeAddrMsg.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def joinReq(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Ring.Node2Node/joinReq',
+            ring__pb2.IpPortMsg.SerializeToString,
+            ring__pb2.ResponseMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
