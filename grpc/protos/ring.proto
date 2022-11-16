@@ -5,18 +5,43 @@ package Ring;
 service Node2Node {
 
     rpc obtainId(IDReqMsg) returns (IDReqRespMsg) {}
+    rpc findAddr(IdRingMsg) returns (NodeAddrMsg) {}
+    rpc joinReq(IpPortMsg) returns (ResponseMsg) {}
+}
+//////////////////General
+message IpPortMsg {
+    string agentId = 1;
+    string ip = 2;
+    string port = 3;
+}
+
+message ResponseMsg {
+    int64 errorCode = 1;
+    bool respStatus = 2;
 }
 
 
-
+//////////////////obtainId
 message IDReqMsg {
     string token = 1;
 }
-
-
-
 message IDReqRespMsg {
     int64 errorCode = 1;
     string agentId = 2;
     string nodeId = 3;
 }
+//////////////////
+
+//////////////////findAddr
+message IdRingMsg {
+    string ringId = 1;
+}
+
+message NodeAddrMsg {
+    int64 errorCode = 1;
+    string NodeId = 2;
+    IpPortMsg master = 3;
+    IpPortMsg backup = 4;
+}
+
+//////////////////
