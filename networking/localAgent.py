@@ -17,13 +17,15 @@ class LocalAgent:
     __agent = Agent("need init", "localhost", "00")
     __grpcServer = None
     
-    def getAgent():
-        return LocalAgent.__agent
+    @classmethod
+    def getAgent(self) -> Agent:
+        return self.__agent
+    
     
     @classmethod
-    def _setAgent(self, id:str, port:str):
+    def _setAgent(self, id:str, port:str, ip:str="localhost"):
         self.__agent.agent_id = id
-        self.__agent.ip = "localhost"
+        self.__agent.ip = ip
         self.__agent.port = port
         
     @classmethod
@@ -32,6 +34,14 @@ class LocalAgent:
         dNode = DNode(create_node_id(), None, [self.__agent])
         dNode.predecessor = dNode
         self.__agent.hosting = dNode
+        
+    @classmethod
+    def confAgent(self, ip:str, port:str, capacity:int, agent_type:int) -> None:
+        agent = self.getAgent()
+        agent.ip = ip
+        agent.port = port
+        agent.agent_type = agent_type
+        agent.capacity = capacity
         
     @classmethod
     def showMe(self):

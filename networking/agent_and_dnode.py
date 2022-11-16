@@ -10,6 +10,8 @@ class Agent:
     agent_id: str
     ip: str
     port: str
+    agent_type: int = -1
+    capacity: int = 6000
     hosting: 'DNode' = None
     
     def show(self):
@@ -24,7 +26,19 @@ class DNode:
     agents: Dict[str, 'Agent'] = field(default_factory=dict, repr=False)
     fingerTable: Dict[str, 'DNode'] = field(default_factory=dict, repr=False)
     
-    
+
+
+
+
+
+
+
+
+
+
+
+
+  
 if __name__ == '__main__':
     a1 = Agent("a1", "host", "00")
     a2 = Agent("a2", "host", "00")
