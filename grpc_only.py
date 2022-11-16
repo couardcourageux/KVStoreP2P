@@ -22,11 +22,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     if args.join:
+        LocalAgent.confAgent("localhost", args.gport, 6000)
         LocalAgent.joinNetwork(args.join)
         # LocalAgent.showMe()
         # print(LocalAgent.__agent)
     else:
-        LocalAgent.initNetwork(args.gport)
+        LocalAgent.confAgent("localhost", args.gport, 6000)
+        LocalAgent.initNetwork()
         LocalAgent.showMe()
         # si j'ai un doute sur peut-on travailler sur l'agent retourné
         # LocalAgent.getAgent().hosting.dNode_id = "chips"
