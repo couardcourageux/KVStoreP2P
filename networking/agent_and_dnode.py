@@ -4,6 +4,19 @@ from typing import List, Dict
 import json
 
 
+class AgentDNodeHoster:
+    agents = {}
+    dnodes = {}
+    
+    @classmethod
+    def show(self):
+        print(AgentDNodeHoster.agents)
+        print(AgentDNodeHoster.dnodes)
+        
+    # @classmethod
+    # def find(self, truc:str):
+    #     return self.agents.get(truc, None)
+
 
 @dataclass
 class Agent:
@@ -12,70 +25,93 @@ class Agent:
     port: str
     agent_type: int = -1
     capacity: int = 6000
-    hosting: 'DNode' | str = None
+    _hosting: str = ""
+    
+    # @property
+    def hosting(self):
+        if self._hosting == "":
+            return None
+        return DNode.get(self._hosting)
+    
+    def setHosting(self, node: 'DNode'):
+        self._hosting = node.dNode_id
     
     def show(self):
-        print(f"agent: {self.agent_id[:20]}, hosting node {self.hosting.dNode_id[:20]}")
+        print(f"agent: {self.agent_id[:20]}, hosting node {DNode.get(self._hosting).dNode_id[:20]}")
         
-    def get_identity(self):
-        dict = {
-            "agent_id": self.agent_id,
-            "ip": self.ip,
-            "port":self.port,
-            "type": self.agent_type,
-            "capacity": self.capacity,
-        }
-        if self.hosting != None:
-            dict["hosting_id"] = self.hosting.dNode_id
-        else:
-            dict["hosting_id"] = ""
-        
-        return dict
-    
-    def export_identity(self):
-        return json.dumps(self.get_identity())
+            
+    @classmethod
+    def register(self, agent:'Agent') -> None:
+        AgentDNodeHoster.agents[agent.agent_id] = agent
+            
+    @classmethod
+    def get(self, agent_id:str) -> 'Agent':
+        return AgentDNodeHoster.agents.get(agent_id, None)
     
     @classmethod
-    def import_identity(self, identity:str) -> 'Agent':
-        # dict = json.loads(identityStr)
-        agent = Agent(identity["agent_id"], identity["ip"], identity["port"], identity["type"], identity["capacity"], identity["hosting_id"])
-        return agent
+    def unlist(self, agent_id:str) -> None:
+        AgentDNodeHoster.agents.pop(agent_id, None)
     
     
     
 @dataclass
 class DNode:
     dNode_id: str
-    predecessor: 'DNode' | str = field(repr=False)
-    agents: Dict[str, 'Agent'] = field(default_factory=dict, repr=False)
-    fingerTable: Dict[str, 'DNode'] = field(default_factory=dict, repr=False)
+    _predecessor: str = field(default="", repr=False)
+    _agents: List[str] = field(default_factory=list, repr=False)
+    _fingerTable: List[str] = field(default_factory=list, repr=False)
     
-    def get_identity(self) -> Dict:
-        dict = {
-            'nodeId': self.dNode_id,
-            'agents': [x.get_identity() for x in self.agents],
-            'predecessor_id': ""
-        }
-        
-        if self.predecessor != None:
-            dict['predecessor_id'] = self.predecessor.dNode_id
-        
-        return dict
-    
-    def export_identity(self) -> str:
-        return json.dumps(self.get_identity())
+    ###################################
+    @classmethod
+    def register(self, dnode:'DNode') -> None:
+        AgentDNodeHoster.dnodes[dnode.dNode_id] = dnode
+            
+    @classmethod
+    def get(self, dNode_id:str) -> 'DNode':
+        return AgentDNodeHoster.dnodes.get(dNode_id, None)
     
     @classmethod
-    def getNodeFromIdentity(self, identityStr: str) -> 'DNode':
-        dict = json.loads(identityStr)
-        
-        node = DNode(   dict['nodeId'], 
-                        dict["predecessor_id"], 
-                        {x["agent_id"]:Agent.import_identity(x) for x in dict["agents"] }
-                    )
-        
-        # for c, v in node.agents.item():
-        #     v.
+    def unlist(self, dNode_id:str) -> None:
+        AgentDNodeHoster.dnodes.pop(dNode_id, None)
+    ###################################
+    # @property
+    def predecessor(self) -> 'DNode':
+        if self._predecessor == "":
+            return None
+        return DNode.get(self._predecessor)
+    
+    def setPredecessor(self, node: 'DNode'):
+        self._predecessor = node.dNode_id
+    ###################################
+    # @property
+    def agents(self) -> Dict[str, 'Agent']:
+        output = {x: Agent.get(x) for x in self._agents}
+        output = {k: v for k, v in output.items() if v is not None}
+        return output
+    
+    def addAgent(self, agent: 'Agent') -> None:
+        if not agent.agent_id in self._agents:
+            self._agents.append(agent.agent_id)
+            
+    def delAgent(self, agent: 'Agent') -> None:
+        if agent.agent_id in self._agents:
+            self._agents.remove(agent.agent_id)
+            
+    def clearAgents(self) -> None:
+        self._agents.clear()
+    ###################################
+    
+    
+    
+    
+    # @property
+    def fingerTable(self) -> Dict[str, 'DNode']:
+        output = {x: Agent.get(x) for x in self._fingerTable}
+        output = {k: v for k, v in output.items() if v is not None}
+        return output
+    
+    
+    
         
     
 

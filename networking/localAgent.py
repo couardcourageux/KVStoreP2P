@@ -15,38 +15,43 @@ from ringClient import RingClient
 from clusterClient import ClusterClient
 
 class LocalAgent:
-    __agent = Agent("need init", "localhost", "00")
+    __agent = ""
     __grpcServer = None
     
     @classmethod
     def getAgent(self) -> Agent:
-        return self.__agent
+        return Agent.get(self.__agent)
     
     
     @classmethod
-    def _setAgent(self, id:str, port:str="00", ip:str="localhost"):
-        self.__agent.agent_id = id
-        self.__agent.ip = ip
-        self.__agent.port = port
+    def initAgent(self):
+        ag = Agent("need init", "localhost", "00")
+        Agent.register(ag)
+        self.__agent = ag.agent_id
         
     @classmethod
     def initNetwork(self):
-        agent = self.getAgent()
+        agent = Agent.get(self.__agent)
         agent.agent_id = create_agent_id()
+        Agent.register(agent)
+        self.__agent = agent.agent_id
+        
         dNode = DNode(create_node_id(), None, [self.__agent])
-        dNode.predecessor = dNode
-        self.__agent.hosting = dNode
+        DNode.register(dNode)
+        agent.setHosting(dNode)
+        agent.setHosting(dNode)
+        
         
     @classmethod
     def confAgent(self, ip:str, port:str, capacity:int) -> None:
-        agent = self.getAgent()
+        agent = Agent.get(self.__agent)
         agent.ip = ip
         agent.port = port
         agent.capacity = capacity
         
     @classmethod
     def showMe(self):
-        self.__agent.show()
+        Agent.get(self.__agent).show()
         
     @classmethod
     def joinNetwork(self, distantAgentHost: str):
@@ -62,24 +67,29 @@ class LocalAgent:
                         []
                      )
         if dict["master"]["agentId"] != "":
-            agents.append(  Agent(dict["master"]["agentId"], 
+            ag1 =  Agent(dict["master"]["agentId"], 
                                   dict["master"]["ip"], 
                                   dict["master"]["port"], 
                                   1,
                                   None,
                                   node
-                        ))
+                        )
+            Agent.register(ag1)
+            agents.append(ag1.agent_id)
         
         if dict["backup"]["agentId"] != "":
-            agents.append(  Agent(dict["backup"]["agentId"], 
+            ag2 = Agent(dict["backup"]["agentId"], 
                                   dict["backup"]["ip"], 
                                   dict["backup"]["port"], 
                                   1,
                                   None,
                                   node
-                        ))
+                        )
+            Agent.register(ag2)
+            agents.append(ag2.agent_id)
         
         node.agents = agents
+        DNode.register(node)
         
         ClusterClient.joinNode(distantAgentHost, self.getAgent())
         

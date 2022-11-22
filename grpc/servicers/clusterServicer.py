@@ -12,9 +12,9 @@ import ring_pb2
 import ring_pb2_grpc
 
 
-from utilitary import create_agent_id, create_node_id
+# from utilitary import create_agent_id, create_node_id
 from localAgent import LocalAgent
-from agent_and_dnode import Agent
+from agent_and_dnode import Agent, DNode
 
 
 class ClusterServicer(ring_pb2_grpc.AgentClusterServicer):
@@ -22,14 +22,16 @@ class ClusterServicer(ring_pb2_grpc.AgentClusterServicer):
         # ag = LocalAgent.getAgent()
         print("joinReq requested")
         print(request)
-        dNode = LocalAgent.getAgent().hosting
+        dNode = LocalAgent.getAgent().hosting()
         joiningAgent = Agent(   request.agentLoc.agentId, 
                                 request.agentLoc.ip, 
                                 request.agentLoc.port, 
                                 request.agentType, 
-                                request.capacity, dNode
+                                request.capacity, 
+                                dNode.dNode_id
                             )
-        dNode.agents[joiningAgent.agent_id] = joiningAgent
+        Agent.register(joiningAgent)
+        dNode.addAgent(joiningAgent)
         
         resp = ring_pb2.ResponseMsg()
         resp.errorCode = 0

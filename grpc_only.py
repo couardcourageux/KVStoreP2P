@@ -1,6 +1,8 @@
 import sys
 import os
 
+
+
 LOCAL_DIRECTORY = os.getcwd()
 GRPC_DIR = os.path.join(LOCAL_DIRECTORY, "grpc")
 
@@ -11,6 +13,8 @@ sys.path.append(GRPC_DIR)
 import argparse
 from localAgent import LocalAgent
 from grpc_server import get_server
+from agent_and_dnode import AgentDNodeHoster, Agent, DNode
+from utilitary import create_node_id
 
 
 
@@ -22,14 +26,20 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
     if args.join:
+        LocalAgent.initAgent()
         LocalAgent.confAgent("localhost", args.gport, 6000)
         LocalAgent.joinNetwork(args.join)
         # LocalAgent.showMe()
         # print(LocalAgent.__agent)
     else:
+        LocalAgent.initAgent()
         LocalAgent.confAgent("localhost", args.gport, 6000)
+        # AgentDNodeHoster.show()
+     
         LocalAgent.initNetwork()
         LocalAgent.showMe()
+        
+       
         # si j'ai un doute sur peut-on travailler sur l'agent retourné
         # LocalAgent.getAgent().hosting.dNode_id = "chips"
         # LocalAgent.showMe()
