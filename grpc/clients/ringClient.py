@@ -5,7 +5,7 @@ LOCAL_DIRECTORY = os.getcwd()
 GRPC_DIR = os.path.join(LOCAL_DIRECTORY, "grpc")
 
 sys.path.append(os.path.join(GRPC_DIR, "pyProtos"))
-
+sys.path.append(os.path.join(LOCAL_DIRECTORY, "networking"))
 
 
 import grpc
@@ -14,6 +14,7 @@ from typing import Tuple, Dict
 
 import ring_pb2_grpc
 import ring_pb2
+
 
 
 
@@ -57,14 +58,4 @@ class RingClient:
         print(dict)
         return dict
     
-    @classmethod
-    def joinNode(self, distantAgentHost:str, agentId:str, agentIp:str, agentPort:str) :
-        with grpc.insecure_channel(distantAgentHost) as ch:
-            stub = ring_pb2_grpc.Node2NodeStub(ch)
-            req = ring_pb2.IpPortMsg()
-            req.agentId = agentId
-            req.ip = agentIp
-            req.port = agentPort
-            resp = stub.joinReq(req)
-            
-        print(resp)
+    

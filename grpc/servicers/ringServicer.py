@@ -15,6 +15,7 @@ import ring_pb2_grpc
 
 from utilitary import create_agent_id, create_node_id
 from localAgent import LocalAgent
+from agent_and_dnode import Agent
 
 class RingServicer(ring_pb2_grpc.Node2NodeServicer):
     def obtainId(self, request, context) -> ring_pb2.IDReqRespMsg:
@@ -47,14 +48,5 @@ class RingServicer(ring_pb2_grpc.Node2NodeServicer):
         rep.backup.CopyFrom(add2)
         return rep
     
-    def joinReq(self, request, context):
-        # ag = LocalAgent.getAgent()
-        print("joinReq requested")
-        print(request)
-        
-        resp = ring_pb2.ResponseMsg()
-        resp.errorCode = 0
-        resp.respStatus = False
-        
-        return resp
+    
         

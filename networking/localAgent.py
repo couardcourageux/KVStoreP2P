@@ -12,6 +12,7 @@ sys.path.append(os.path.join(GRPC_DIR, "clients"))
 from agent_and_dnode import Agent, DNode
 from utilitary import create_agent_id, create_node_id
 from ringClient import RingClient
+from clusterClient import ClusterClient
 
 class LocalAgent:
     __agent = Agent("need init", "localhost", "00")
@@ -80,7 +81,7 @@ class LocalAgent:
         
         node.agents = agents
         
-        RingClient.joinNode(distantAgentHost, agent.agent_id, agent.ip, agent.port)
+        ClusterClient.joinNode(distantAgentHost, self.getAgent())
         
         print(f"joining network: agent_id: {agent_id[:20]}")
         print(f"will request for adress of {node_id[:20]}")

@@ -24,11 +24,6 @@ class Node2NodeStub(object):
                 request_serializer=ring__pb2.IdRingMsg.SerializeToString,
                 response_deserializer=ring__pb2.NodeAddrMsg.FromString,
                 )
-        self.joinReq = channel.unary_unary(
-                '/Ring.Node2Node/joinReq',
-                request_serializer=ring__pb2.IpPortMsg.SerializeToString,
-                response_deserializer=ring__pb2.ResponseMsg.FromString,
-                )
 
 
 class Node2NodeServicer(object):
@@ -46,12 +41,6 @@ class Node2NodeServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def joinReq(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_Node2NodeServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -64,11 +53,6 @@ def add_Node2NodeServicer_to_server(servicer, server):
                     servicer.findAddr,
                     request_deserializer=ring__pb2.IdRingMsg.FromString,
                     response_serializer=ring__pb2.NodeAddrMsg.SerializeToString,
-            ),
-            'joinReq': grpc.unary_unary_rpc_method_handler(
-                    servicer.joinReq,
-                    request_deserializer=ring__pb2.IpPortMsg.FromString,
-                    response_serializer=ring__pb2.ResponseMsg.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -114,6 +98,50 @@ class Node2Node(object):
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
+
+class AgentClusterStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.joinReq = channel.unary_unary(
+                '/Ring.AgentCluster/joinReq',
+                request_serializer=ring__pb2.AgentDescMsg.SerializeToString,
+                response_deserializer=ring__pb2.ResponseMsg.FromString,
+                )
+
+
+class AgentClusterServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def joinReq(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_AgentClusterServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'joinReq': grpc.unary_unary_rpc_method_handler(
+                    servicer.joinReq,
+                    request_deserializer=ring__pb2.AgentDescMsg.FromString,
+                    response_serializer=ring__pb2.ResponseMsg.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'Ring.AgentCluster', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class AgentCluster(object):
+    """Missing associated documentation comment in .proto file."""
+
     @staticmethod
     def joinReq(request,
             target,
@@ -125,8 +153,8 @@ class Node2Node(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Ring.Node2Node/joinReq',
-            ring__pb2.IpPortMsg.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/Ring.AgentCluster/joinReq',
+            ring__pb2.AgentDescMsg.SerializeToString,
             ring__pb2.ResponseMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -6,7 +6,11 @@ service Node2Node {
 
     rpc obtainId(IDReqMsg) returns (IDReqRespMsg) {}
     rpc findAddr(IdRingMsg) returns (NodeAddrMsg) {}
-    rpc joinReq(IpPortMsg) returns (ResponseMsg) {}
+    
+}
+
+service AgentCluster {
+    rpc joinReq(AgentDescMsg) returns (ResponseMsg) {}
 }
 //////////////////General
 message IpPortMsg {
@@ -43,5 +47,12 @@ message NodeAddrMsg {
     IpPortMsg master = 3;
     IpPortMsg backup = 4;
 }
-
 //////////////////
+
+//////////////////joinReq
+message AgentDescMsg {
+    IpPortMsg agentLoc = 1;
+    int64 agentType = 2;
+    int64 capacity = 3;
+}
+/////////////////
