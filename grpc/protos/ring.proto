@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package Ring;
 
+////////////////////////Services
 service Node2Node {
 
     rpc obtainId(IDReqMsg) returns (IDReqRespMsg) {}
@@ -12,6 +13,13 @@ service Node2Node {
 service AgentCluster {
     rpc joinReq(AgentDescMsg) returns (ResponseMsg) {}
 }
+
+service ClusterCronJob {
+    rpc callPing(voidMsg) returns (voidMsg) {}
+    rpc callCheckPings(voidMsg) returns (voidMsg) {}
+    // rpc callPing(voidMsg) returns (voidMsg) {}
+}
+
 //////////////////General
 message IpPortMsg {
     string agentId = 1;
@@ -24,7 +32,7 @@ message ResponseMsg {
     bool respStatus = 2;
 }
 
-
+message voidMsg {}
 //////////////////obtainId
 message IDReqMsg {
     string token = 1;
