@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nring.proto\x12\x04Ring\"6\n\tIpPortMsg\x12\x0f\n\x07\x61gentId\x18\x01 \x01(\t\x12\n\n\x02ip\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\t\"4\n\x0bResponseMsg\x12\x11\n\terrorCode\x18\x01 \x01(\x03\x12\x12\n\nrespStatus\x18\x02 \x01(\x08\"\t\n\x07voidMsg\"\x19\n\x08IDReqMsg\x12\r\n\x05token\x18\x01 \x01(\t\"B\n\x0cIDReqRespMsg\x12\x11\n\terrorCode\x18\x01 \x01(\x03\x12\x0f\n\x07\x61gentId\x18\x02 \x01(\t\x12\x0e\n\x06nodeId\x18\x03 \x01(\t\"\x1b\n\tIdRingMsg\x12\x0e\n\x06ringId\x18\x01 \x01(\t\"r\n\x0bNodeAddrMsg\x12\x11\n\terrorCode\x18\x01 \x01(\x03\x12\x0e\n\x06NodeId\x18\x02 \x01(\t\x12\x1f\n\x06master\x18\x03 \x01(\x0b\x32\x0f.Ring.IpPortMsg\x12\x1f\n\x06\x62\x61\x63kup\x18\x04 \x01(\x0b\x32\x0f.Ring.IpPortMsg\"V\n\x0c\x41gentDescMsg\x12!\n\x08\x61gentLoc\x18\x01 \x01(\x0b\x32\x0f.Ring.IpPortMsg\x12\x11\n\tagentType\x18\x02 \x01(\x03\x12\x10\n\x08\x63\x61pacity\x18\x03 \x01(\x03\x32o\n\tNode2Node\x12\x30\n\x08obtainId\x12\x0e.Ring.IDReqMsg\x1a\x12.Ring.IDReqRespMsg\"\x00\x12\x30\n\x08\x66indAddr\x12\x0f.Ring.IdRingMsg\x1a\x11.Ring.NodeAddrMsg\"\x00\x32\x42\n\x0c\x41gentCluster\x12\x32\n\x07joinReq\x12\x12.Ring.AgentDescMsg\x1a\x11.Ring.ResponseMsg\"\x00\x32n\n\x0e\x43lusterCronJob\x12*\n\x08\x63\x61llPing\x12\r.Ring.voidMsg\x1a\r.Ring.voidMsg\"\x00\x12\x30\n\x0e\x63\x61llCheckPings\x12\r.Ring.voidMsg\x1a\r.Ring.voidMsg\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nring.proto\x12\x04Ring\"6\n\tIpPortMsg\x12\x0f\n\x07\x61gentId\x18\x01 \x01(\t\x12\n\n\x02ip\x18\x02 \x01(\t\x12\x0c\n\x04port\x18\x03 \x01(\t\"4\n\x0bResponseMsg\x12\x11\n\terrorCode\x18\x01 \x01(\x03\x12\x12\n\nrespStatus\x18\x02 \x01(\x08\"\t\n\x07voidMsg\"\x19\n\x08IDReqMsg\x12\r\n\x05token\x18\x01 \x01(\t\"B\n\x0cIDReqRespMsg\x12\x11\n\terrorCode\x18\x01 \x01(\x03\x12\x0f\n\x07\x61gentId\x18\x02 \x01(\t\x12\x0e\n\x06nodeId\x18\x03 \x01(\t\"\x1b\n\tIdRingMsg\x12\x0e\n\x06ringId\x18\x01 \x01(\t\"r\n\x0bNodeAddrMsg\x12\x11\n\terrorCode\x18\x01 \x01(\x03\x12\x0e\n\x06NodeId\x18\x02 \x01(\t\x12\x1f\n\x06master\x18\x03 \x01(\x0b\x32\x0f.Ring.IpPortMsg\x12\x1f\n\x06\x62\x61\x63kup\x18\x04 \x01(\x0b\x32\x0f.Ring.IpPortMsg\" \n\x0bStringified\x12\x11\n\ttheString\x18\x01 \x01(\t\"!\n\x0c\x41gentDescMsg\x12\x11\n\tagentDict\x18\x01 \x01(\t\"\x1f\n\x0bNodeDescMsg\x12\x10\n\x08NodeDict\x18\x01 \x01(\t\"5\n\x0fJoinClusterResp\x12\x10\n\x08\x61\x63\x63\x65pted\x18\x01 \x01(\x08\x12\x10\n\x08NodeDict\x18\x02 \x01(\t\"\x1d\n\nUpdateRole\x12\x0f\n\x07newRole\x18\x01 \x01(\x03\x32o\n\tNode2Node\x12\x30\n\x08obtainId\x12\x0e.Ring.IDReqMsg\x1a\x12.Ring.IDReqRespMsg\"\x00\x12\x30\n\x08\x66indAddr\x12\x0f.Ring.IdRingMsg\x1a\x11.Ring.NodeDescMsg\"\x00\x32\xad\x01\n\x0c\x41gentCluster\x12\x36\n\x07joinReq\x12\x12.Ring.AgentDescMsg\x1a\x15.Ring.JoinClusterResp\"\x00\x12\x32\n\nupdateRole\x12\x10.Ring.UpdateRole\x1a\x10.Ring.UpdateRole\"\x00\x12\x31\n\x0budpdateNode\x12\x11.Ring.NodeDescMsg\x1a\r.Ring.voidMsg\"\x00\x32\xa6\x01\n\x0e\x43lusterCronJob\x12*\n\x08\x63\x61llPing\x12\r.Ring.voidMsg\x1a\r.Ring.voidMsg\"\x00\x12\x30\n\x0e\x63\x61llCheckPings\x12\r.Ring.voidMsg\x1a\r.Ring.voidMsg\"\x00\x12\x36\n\x14\x63\x61llStabilityCluster\x12\r.Ring.voidMsg\x1a\r.Ring.voidMsg\"\x00\x32\x45\n\x0eNetworkCronJob\x12\x33\n\rcallInitAgent\x12\x11.Ring.Stringified\x1a\r.Ring.voidMsg\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ring_pb2', globals())
@@ -34,12 +34,22 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _IDRINGMSG._serialized_end=263
   _NODEADDRMSG._serialized_start=265
   _NODEADDRMSG._serialized_end=379
-  _AGENTDESCMSG._serialized_start=381
-  _AGENTDESCMSG._serialized_end=467
-  _NODE2NODE._serialized_start=469
-  _NODE2NODE._serialized_end=580
-  _AGENTCLUSTER._serialized_start=582
-  _AGENTCLUSTER._serialized_end=648
-  _CLUSTERCRONJOB._serialized_start=650
-  _CLUSTERCRONJOB._serialized_end=760
+  _STRINGIFIED._serialized_start=381
+  _STRINGIFIED._serialized_end=413
+  _AGENTDESCMSG._serialized_start=415
+  _AGENTDESCMSG._serialized_end=448
+  _NODEDESCMSG._serialized_start=450
+  _NODEDESCMSG._serialized_end=481
+  _JOINCLUSTERRESP._serialized_start=483
+  _JOINCLUSTERRESP._serialized_end=536
+  _UPDATEROLE._serialized_start=538
+  _UPDATEROLE._serialized_end=567
+  _NODE2NODE._serialized_start=569
+  _NODE2NODE._serialized_end=680
+  _AGENTCLUSTER._serialized_start=683
+  _AGENTCLUSTER._serialized_end=856
+  _CLUSTERCRONJOB._serialized_start=859
+  _CLUSTERCRONJOB._serialized_end=1025
+  _NETWORKCRONJOB._serialized_start=1027
+  _NETWORKCRONJOB._serialized_end=1096
 # @@protoc_insertion_point(module_scope)

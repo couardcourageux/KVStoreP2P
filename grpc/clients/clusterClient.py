@@ -10,7 +10,7 @@ sys.path.append(os.path.join(LOCAL_DIRECTORY, "networking"))
 
 import grpc
 from typing import Tuple, Dict
-
+import json
 
 import ring_pb2_grpc
 import ring_pb2
@@ -21,18 +21,23 @@ class ClusterClient:
         pass
     
     @classmethod
-    def joinNode(self, distantAgentHost:str, agent: Agent) :
+    def joinNode(self, distantAgentHost:str, agent: Agent) -> None:
         with grpc.insecure_channel(distantAgentHost) as ch:
             stub = ring_pb2_grpc.AgentClusterStub(ch)
-            sub = ring_pb2.IpPortMsg()
-            sub.agentId = agent.agent_id
-            sub.ip = agent.ip
-            sub.port = agent.port
-            
             req = ring_pb2.AgentDescMsg()
-            req.agentLoc.CopyFrom(sub)
-            req.agentType = agent.agent_type
-            req.capacity = agent.capacity
+            req.agentDict = json.dumps(agent.toDict())
             resp = stub.joinReq(req)
             
-        print(resp)
+        if resp.accepted:    
+            return json.loads(resp.NodeDict)
+        return None
+    
+    @classmethod
+    def sendUpdateNodeData(self, distantAgentHost:str, nodeDict:str) -> None:
+        with grpc.insecure_channel(distantAgentHost) as ch:
+            stub = ring_pb2_grpc.AgentClusterStub(ch)
+            req = ring_pb2.NodeDescMsg()
+            req.NodeDict = nodeDict
+            stub.udpdateNode(req)
+        return None
+            

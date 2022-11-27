@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from typing import List, Dict
 
 import json
@@ -27,6 +27,28 @@ class Agent:
     capacity: int = 6000
     _hosting: str = ""
     
+    
+    def toDict(self) -> Dict:
+        return asdict(self)
+    
+    @classmethod
+    def fromDict(self, dict:Dict) -> 'Agent':
+        ag = Agent(
+            dict["agent_id"], 
+            dict["ip"], 
+            dict["port"],
+            dict["agent_type"], 
+            dict["capacity"], 
+            dict["_hosting"]
+        )
+        return ag
+    
+    @classmethod
+    def importFromDict(self, dict:Dict) -> str:
+        ag = Agent.fromDict(dict)
+        Agent.register(ag)
+        return ag.agent_id
+    
     # @property
     def hosting(self):
         if self._hosting == "":
@@ -39,6 +61,8 @@ class Agent:
     def show(self):
         print(f"agent: {self.agent_id[:20]}, hosting node {DNode.get(self._hosting).dNode_id[:20]}")
         
+    def getAddr(self) -> str:
+        return self.ip + ":" + self.port
             
     @classmethod
     def register(self, agent:'Agent') -> None:
@@ -60,6 +84,35 @@ class DNode:
     _predecessor: str = field(default="", repr=False)
     _agents: List[str] = field(default_factory=list, repr=False)
     _fingerTable: List[str] = field(default_factory=list, repr=False)
+    
+    
+    def toDict(self):
+        dict = asdict(self)
+        dict.pop("_fingerTable", None)
+        ags = self.agents()
+        for c in ags.keys():
+            ags[c] = asdict(ags[c])
+        dict["_agents"] = list(ags.values())
+        return dict
+    
+    @classmethod
+    def fromDict(self, dict:Dict) -> 'DNode':
+        node = DNode(
+            dict["dNode_id"], 
+            dict["_predecessor"]
+        )
+        return node
+    
+    @classmethod
+    def importFromDict(self, dict:Dict) -> str:
+        print(dict)
+        node = DNode.fromDict(dict)
+        DNode.register(node)
+        for dc in dict["_agents"]:
+            ag_id = Agent.importFromDict(dc)
+            node.addAgent(Agent.get(ag_id))
+            
+        return node.dNode_id
     
     ###################################
     @classmethod
@@ -93,9 +146,9 @@ class DNode:
         if not agent.agent_id in self._agents:
             self._agents.append(agent.agent_id)
             
-    def delAgent(self, agent: 'Agent') -> None:
-        if agent.agent_id in self._agents:
-            self._agents.remove(agent.agent_id)
+    def delAgent(self, agent_id: str) -> None:
+        if agent_id in self._agents:
+            self._agents.remove(agent_id)
             
     def clearAgents(self) -> None:
         self._agents.clear()
@@ -119,27 +172,3 @@ class DNode:
 
 
 
-
-
-
-
-
-
-
-  
-if __name__ == '__main__':
-    a1 = Agent("a1", "host", "00")
-    a2 = Agent("a2", "host", "00")
-    a3 = Agent("a3", "host", "00")
-    a4 = Agent("a4", "host", "00")
-    a5 = Agent("a5", "host", "00")
-    
-    d1 = DNode("d1", None, [a1, a2, a3])
-    
-    host_base = {"d1": d1}
-    a1.hosting = host_base.copy()
-    a2.hosting = host_base.copy()
-    a3.hosting = host_base.copy()
-    
-    print(a1.hosting, d1.agents)
-    

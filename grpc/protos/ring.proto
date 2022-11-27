@@ -6,18 +6,25 @@ package Ring;
 service Node2Node {
 
     rpc obtainId(IDReqMsg) returns (IDReqRespMsg) {}
-    rpc findAddr(IdRingMsg) returns (NodeAddrMsg) {}
+    rpc findAddr(IdRingMsg) returns (NodeDescMsg) {}
     
 }
 
 service AgentCluster {
-    rpc joinReq(AgentDescMsg) returns (ResponseMsg) {}
+    rpc joinReq(AgentDescMsg) returns (JoinClusterResp) {}
+    rpc updateRole(UpdateRole) returns (UpdateRole) {}
+    rpc udpdateNode(NodeDescMsg) returns (voidMsg) {}
 }
 
 service ClusterCronJob {
     rpc callPing(voidMsg) returns (voidMsg) {}
     rpc callCheckPings(voidMsg) returns (voidMsg) {}
-    // rpc callPing(voidMsg) returns (voidMsg) {}
+    rpc callStabilityCluster(voidMsg) returns (voidMsg) {}
+
+}
+
+service NetworkCronJob {
+    rpc callInitAgent(Stringified) returns (voidMsg) {}
 }
 
 //////////////////General
@@ -57,10 +64,26 @@ message NodeAddrMsg {
 }
 //////////////////
 
+message Stringified {
+    string theString = 1;
+}
+
 //////////////////joinReq
 message AgentDescMsg {
-    IpPortMsg agentLoc = 1;
-    int64 agentType = 2;
-    int64 capacity = 3;
+    string agentDict = 1;
 }
+
+message NodeDescMsg {
+    string NodeDict = 1;
+}
+
+message JoinClusterResp {
+    bool accepted = 1;
+    string NodeDict = 2;
+}
+
+message UpdateRole {
+    int64 newRole = 1;
+}
+
 /////////////////

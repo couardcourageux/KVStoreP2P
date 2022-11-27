@@ -11,29 +11,24 @@ sys.path.append(os.path.join(GRPC_DIR, "pyProtos"))
 import ring_pb2
 import ring_pb2_grpc
 
+import json
 
 # from utilitary import create_agent_id, create_node_id
 from localAgent import LocalAgent
 from agent_and_dnode import Agent, DNode
+from clusterLogic import joiningClusterProc
 
 
 class ClusterServicer(ring_pb2_grpc.AgentClusterServicer):
-    def joinReq(self, request, context):
-        # ag = LocalAgent.getAgent()
-        print("joinReq requested")
-        print(request)
-        dNode = LocalAgent.getAgent().hosting()
-        joiningAgent = Agent(   request.agentLoc.agentId, 
-                                request.agentLoc.ip, 
-                                request.agentLoc.port, 
-                                request.agentType, 
-                                request.capacity, 
-                                dNode.dNode_id
-                            )
-        Agent.register(joiningAgent)
-        dNode.addAgent(joiningAgent)
-        
-        resp = ring_pb2.ResponseMsg()
-        resp.errorCode = 0
-        resp.respStatus = False
+    def joinReq(self, request, context):        
+        result = joiningClusterProc(request.agentDict)
+
+        resp = ring_pb2.JoinClusterResp()
+        resp.accepted = result["accepted"]
+        resp.NodeDict = result["NodeDict"]
         return resp
+    
+    def udpdateNode(self, request, context):
+        dict = json.loads(request.NodeDict)
+        DNode.importFromDict(dict)
+        return ring_pb2.voidMsg()

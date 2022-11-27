@@ -23,7 +23,7 @@ class Node2NodeStub(object):
         self.findAddr = channel.unary_unary(
                 '/Ring.Node2Node/findAddr',
                 request_serializer=ring__pb2.IdRingMsg.SerializeToString,
-                response_deserializer=ring__pb2.NodeAddrMsg.FromString,
+                response_deserializer=ring__pb2.NodeDescMsg.FromString,
                 )
 
 
@@ -54,7 +54,7 @@ def add_Node2NodeServicer_to_server(servicer, server):
             'findAddr': grpc.unary_unary_rpc_method_handler(
                     servicer.findAddr,
                     request_deserializer=ring__pb2.IdRingMsg.FromString,
-                    response_serializer=ring__pb2.NodeAddrMsg.SerializeToString,
+                    response_serializer=ring__pb2.NodeDescMsg.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -97,7 +97,7 @@ class Node2Node(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Ring.Node2Node/findAddr',
             ring__pb2.IdRingMsg.SerializeToString,
-            ring__pb2.NodeAddrMsg.FromString,
+            ring__pb2.NodeDescMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -114,7 +114,17 @@ class AgentClusterStub(object):
         self.joinReq = channel.unary_unary(
                 '/Ring.AgentCluster/joinReq',
                 request_serializer=ring__pb2.AgentDescMsg.SerializeToString,
-                response_deserializer=ring__pb2.ResponseMsg.FromString,
+                response_deserializer=ring__pb2.JoinClusterResp.FromString,
+                )
+        self.updateRole = channel.unary_unary(
+                '/Ring.AgentCluster/updateRole',
+                request_serializer=ring__pb2.UpdateRole.SerializeToString,
+                response_deserializer=ring__pb2.UpdateRole.FromString,
+                )
+        self.udpdateNode = channel.unary_unary(
+                '/Ring.AgentCluster/udpdateNode',
+                request_serializer=ring__pb2.NodeDescMsg.SerializeToString,
+                response_deserializer=ring__pb2.voidMsg.FromString,
                 )
 
 
@@ -127,13 +137,35 @@ class AgentClusterServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def updateRole(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def udpdateNode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AgentClusterServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'joinReq': grpc.unary_unary_rpc_method_handler(
                     servicer.joinReq,
                     request_deserializer=ring__pb2.AgentDescMsg.FromString,
-                    response_serializer=ring__pb2.ResponseMsg.SerializeToString,
+                    response_serializer=ring__pb2.JoinClusterResp.SerializeToString,
+            ),
+            'updateRole': grpc.unary_unary_rpc_method_handler(
+                    servicer.updateRole,
+                    request_deserializer=ring__pb2.UpdateRole.FromString,
+                    response_serializer=ring__pb2.UpdateRole.SerializeToString,
+            ),
+            'udpdateNode': grpc.unary_unary_rpc_method_handler(
+                    servicer.udpdateNode,
+                    request_deserializer=ring__pb2.NodeDescMsg.FromString,
+                    response_serializer=ring__pb2.voidMsg.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -158,7 +190,41 @@ class AgentCluster(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Ring.AgentCluster/joinReq',
             ring__pb2.AgentDescMsg.SerializeToString,
-            ring__pb2.ResponseMsg.FromString,
+            ring__pb2.JoinClusterResp.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def updateRole(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Ring.AgentCluster/updateRole',
+            ring__pb2.UpdateRole.SerializeToString,
+            ring__pb2.UpdateRole.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def udpdateNode(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Ring.AgentCluster/udpdateNode',
+            ring__pb2.NodeDescMsg.SerializeToString,
+            ring__pb2.voidMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -182,6 +248,11 @@ class ClusterCronJobStub(object):
                 request_serializer=ring__pb2.voidMsg.SerializeToString,
                 response_deserializer=ring__pb2.voidMsg.FromString,
                 )
+        self.callStabilityCluster = channel.unary_unary(
+                '/Ring.ClusterCronJob/callStabilityCluster',
+                request_serializer=ring__pb2.voidMsg.SerializeToString,
+                response_deserializer=ring__pb2.voidMsg.FromString,
+                )
 
 
 class ClusterCronJobServicer(object):
@@ -199,6 +270,12 @@ class ClusterCronJobServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def callStabilityCluster(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ClusterCronJobServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -209,6 +286,11 @@ def add_ClusterCronJobServicer_to_server(servicer, server):
             ),
             'callCheckPings': grpc.unary_unary_rpc_method_handler(
                     servicer.callCheckPings,
+                    request_deserializer=ring__pb2.voidMsg.FromString,
+                    response_serializer=ring__pb2.voidMsg.SerializeToString,
+            ),
+            'callStabilityCluster': grpc.unary_unary_rpc_method_handler(
+                    servicer.callStabilityCluster,
                     request_deserializer=ring__pb2.voidMsg.FromString,
                     response_serializer=ring__pb2.voidMsg.SerializeToString,
             ),
@@ -252,6 +334,84 @@ class ClusterCronJob(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Ring.ClusterCronJob/callCheckPings',
             ring__pb2.voidMsg.SerializeToString,
+            ring__pb2.voidMsg.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def callStabilityCluster(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Ring.ClusterCronJob/callStabilityCluster',
+            ring__pb2.voidMsg.SerializeToString,
+            ring__pb2.voidMsg.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class NetworkCronJobStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.callInitAgent = channel.unary_unary(
+                '/Ring.NetworkCronJob/callInitAgent',
+                request_serializer=ring__pb2.Stringified.SerializeToString,
+                response_deserializer=ring__pb2.voidMsg.FromString,
+                )
+
+
+class NetworkCronJobServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def callInitAgent(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_NetworkCronJobServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'callInitAgent': grpc.unary_unary_rpc_method_handler(
+                    servicer.callInitAgent,
+                    request_deserializer=ring__pb2.Stringified.FromString,
+                    response_serializer=ring__pb2.voidMsg.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'Ring.NetworkCronJob', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class NetworkCronJob(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def callInitAgent(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Ring.NetworkCronJob/callInitAgent',
+            ring__pb2.Stringified.SerializeToString,
             ring__pb2.voidMsg.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

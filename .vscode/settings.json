@@ -11,6 +11,7 @@
         "./grpc/servicers",
         "./grpc/pyProtos",
         "./grpc/clients",
-        "./grpc"
+        "./grpc",
+        "./cronJobs"
     ]
 }

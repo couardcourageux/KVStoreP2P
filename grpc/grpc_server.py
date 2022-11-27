@@ -13,6 +13,7 @@ import grpc
 from ringServicer import RingServicer
 from clusterServicer import ClusterServicer
 from clusterCronJobServicer import ClusterCronServicer
+from networkCronServicer import NetworkCronServicer
 
 import ring_pb2_grpc
 
@@ -24,6 +25,7 @@ def get_server(host, max_workers=10):
     ring_pb2_grpc.add_Node2NodeServicer_to_server(RingServicer(), serv)
     ring_pb2_grpc.add_AgentClusterServicer_to_server(ClusterServicer(), serv)
     ring_pb2_grpc.add_ClusterCronJobServicer_to_server(ClusterCronServicer(), serv)
+    ring_pb2_grpc.add_NetworkCronJobServicer_to_server(NetworkCronServicer(), serv)
     #...
     serv.add_insecure_port(host)
     return serv

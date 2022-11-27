@@ -10,7 +10,7 @@ sys.path.append(os.path.join(LOCAL_DIRECTORY, "networking"))
 
 import grpc
 from typing import Tuple, Dict
-
+import json
 
 import ring_pb2_grpc
 import ring_pb2
@@ -42,20 +42,7 @@ class RingClient:
             req.ringId = NodeId
             resp = stub.findAddr(req)
             
-        dict = {
-            "nodeId": resp.NodeId,
-            "master": {
-                "agentId": resp.master.agentId,
-                "ip": resp.master.ip,
-                "port": resp.master.port,
-            },
-            "backup": {
-                "agentId": resp.backup.agentId,
-                "ip": resp.backup.ip,
-                "port": resp.backup.port,
-            }
-        }
-        print(dict)
-        return dict
+        
+        return json.loads(resp.NodeDict)
     
     

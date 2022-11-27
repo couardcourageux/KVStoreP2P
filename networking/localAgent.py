@@ -8,15 +8,40 @@ sys.path.append(GRPC_DIR)
 sys.path.append(os.path.join(GRPC_DIR, "pyProtos"))
 sys.path.append(os.path.join(GRPC_DIR, "clients"))
 
+sys.path.append(os.path.join(LOCAL_DIRECTORY, "cronJobs"))
+
 
 from agent_and_dnode import Agent, DNode
 from utilitary import create_agent_id, create_node_id
 from ringClient import RingClient
 from clusterClient import ClusterClient
 
+from clusterMaster import ClusterMaster
+from clusterSlave import ClusterSlave
+from initExecutor import InitExecutor
+
 class LocalAgent:
     __agent = ""
     __grpcServer = None
+    __clusterMaster = None
+    __clusterSlave = None
+    __initExecutor = None
+    __tamponMem = {}
+    
+    
+    @classmethod
+    def createCrons(self):
+        self.__clusterMaster = ClusterMaster(self.__port)
+        self.__clusterSlave = ClusterSlave(self.__port)
+        self.__initExecutor = InitExecutor(self.__port)
+        
+    @classmethod
+    def setMemData(self, key:str, val):
+        self.__tamponMem[key] = val
+
+    @classmethod
+    def getMemData(self, key:str):
+        return self.__tamponMem.get(key, None)    
     
     @classmethod
     def getAgent(self) -> Agent:
@@ -60,41 +85,13 @@ class LocalAgent:
         agent.agent_id = agent_id
         
         dict = RingClient.searchAddr(distantAgentHost, node_id)
-        agents = []
-        node = DNode(   node_id, 
-                        None,
-                        [],
-                        []
-                     )
-        if dict["master"]["agentId"] != "":
-            ag1 =  Agent(dict["master"]["agentId"], 
-                                  dict["master"]["ip"], 
-                                  dict["master"]["port"], 
-                                  1,
-                                  None,
-                                  node
-                        )
-            Agent.register(ag1)
-            agents.append(ag1.agent_id)
+        # la description du Node qu'on cherche à joindre
         
-        if dict["backup"]["agentId"] != "":
-            ag2 = Agent(dict["backup"]["agentId"], 
-                                  dict["backup"]["ip"], 
-                                  dict["backup"]["port"], 
-                                  1,
-                                  None,
-                                  node
-                        )
-            Agent.register(ag2)
-            agents.append(ag2.agent_id)
+        # DNode.importFromDict(dict)
         
-        node.agents = agents
-        DNode.register(node)
+        truc = ClusterClient.joinNode(distantAgentHost, self.getAgent())
         
-        ClusterClient.joinNode(distantAgentHost, self.getAgent())
-        
-        print(f"joining network: agent_id: {agent_id[:20]}")
+        print(f"joining network as : agent_id: {agent_id[:20]}")
         print(f"will request for adress of {node_id[:20]}")
         
-        # agent.hosting = node
-        # node.agents.append(agent)
+        print(truc)

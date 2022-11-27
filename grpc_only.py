@@ -16,6 +16,8 @@ from grpc_server import get_server
 from agent_and_dnode import AgentDNodeHoster, Agent, DNode
 from utilitary import create_node_id
 
+from dataclasses import asdict
+
 
 
 if __name__ == '__main__':
@@ -24,26 +26,14 @@ if __name__ == '__main__':
     parser.add_argument('--join', type=str, required=False)
     
     args = parser.parse_args()
+    argz = {
+        "join":args.join,
+        "gport":args.gport
+    }
     
-    if args.join:
-        LocalAgent.initAgent()
-        LocalAgent.confAgent("localhost", args.gport, 6000)
-        LocalAgent.joinNetwork(args.join)
-        # LocalAgent.showMe()
-        # print(LocalAgent.__agent)
-    else:
-        LocalAgent.initAgent()
-        LocalAgent.confAgent("localhost", args.gport, 6000)
-        # AgentDNodeHoster.show()
-     
-        LocalAgent.initNetwork()
-        LocalAgent.showMe()
-        
-       
-        # si j'ai un doute sur peut-on travailler sur l'agent retourné
-        # LocalAgent.getAgent().hosting.dNode_id = "chips"
-        # LocalAgent.showMe()
+    
+   
 
-    server = get_server("localhost:{}".format(args.gport))
+    server = get_server("0.0.0.0:{}".format(args.gport))
     server.start()
     server.wait_for_termination()
