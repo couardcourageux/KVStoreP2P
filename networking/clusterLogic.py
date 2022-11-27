@@ -25,7 +25,7 @@ def joiningClusterProc(agentDict:str) -> Dict[bool, str]:
     joiningAgent.setHosting(dNode)
     Agent.register(joiningAgent)
     dNode.addAgent(joiningAgent)
-    
+    print(LocalAgent.getAgent().hosting().toDict())
     updateNodeDataOnCluster()
     stability()
     updateNodeDataOnCluster()

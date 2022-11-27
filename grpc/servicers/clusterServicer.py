@@ -30,5 +30,10 @@ class ClusterServicer(ring_pb2_grpc.AgentClusterServicer):
     
     def udpdateNode(self, request, context):
         dict = json.loads(request.NodeDict)
-        DNode.importFromDict(dict)
+        nodeId = DNode.importFromDict(dict)
+        LocalAgent.getAgent().setHosting(DNode.get(nodeId))
+        
+        print(LocalAgent.getAgent().hosting().toDict())
+        
+        
         return ring_pb2.voidMsg()

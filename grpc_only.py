@@ -31,6 +31,9 @@ if __name__ == '__main__':
         "gport":args.gport
     }
     
+    LocalAgent.setMemData("args", argz)
+    LocalAgent.createCrons(args.gport)
+    LocalAgent.launchCron("init")
     
    
 

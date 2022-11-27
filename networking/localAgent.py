@@ -30,10 +30,10 @@ class LocalAgent:
     
     
     @classmethod
-    def createCrons(self):
-        self.__clusterMaster = ClusterMaster(self.__port)
-        self.__clusterSlave = ClusterSlave(self.__port)
-        self.__initExecutor = InitExecutor(self.__port)
+    def createCrons(self, port:str):
+        self.__clusterMaster = ClusterMaster(port)
+        self.__clusterSlave = ClusterSlave(port)
+        self.__initExecutor = InitExecutor(port)
         
     @classmethod
     def setMemData(self, key:str, val):
@@ -46,6 +46,27 @@ class LocalAgent:
     @classmethod
     def getAgent(self) -> Agent:
         return Agent.get(self.__agent)
+    
+    @classmethod
+    def initLocalAgent(self):
+        print("i was called")
+        args = self.__tamponMem["args"]
+        if args["join"]:
+            LocalAgent.initAgent()
+            LocalAgent.confAgent("localhost", args["gport"], 6000)
+            LocalAgent.joinNetwork(args["join"])
+            if LocalAgent.getAgent().hosting() != None:
+                print(LocalAgent.getAgent().hosting().toDict())
+            
+        else:
+            LocalAgent.initAgent()
+            LocalAgent.confAgent("localhost", args["gport"], 6000)
+            # AgentDNodeHoster.show()
+        
+            LocalAgent.initNetwork()
+            # LocalAgent.showMe()
+            print(LocalAgent.getAgent().hosting().toDict())
+            ag = LocalAgent.getAgent()
     
     
     @classmethod
@@ -95,3 +116,14 @@ class LocalAgent:
         print(f"will request for adress of {node_id[:20]}")
         
         print(truc)
+        
+    
+    @classmethod
+    def launchCron(self, arg:str):
+        if arg == "master":
+            self.__clusterMaster.launch()
+            
+        elif arg == "slave":
+            self.__clusterSlave.launch()
+        elif arg == "init":
+            self.__initExecutor.launch()

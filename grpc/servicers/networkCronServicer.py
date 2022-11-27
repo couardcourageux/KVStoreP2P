@@ -17,24 +17,9 @@ from localAgent import LocalAgent
 
 class NetworkCronServicer(ring_pb2_grpc.NetworkCronJobServicer):
     def callInitAgent(self, request, context) -> ring_pb2.voidMsg:
-        args = json.loads(request.theString)
+        LocalAgent.initLocalAgent()
+        return ring_pb2.voidMsg()
         
-        if args["join"]:
-            LocalAgent.initAgent()
-            LocalAgent.confAgent("localhost", args["gport"], 6000)
-            LocalAgent.joinNetwork(args["join"])
-        # LocalAgent.showMe()
-        # print(LocalAgent.__agent)
-        else:
-            LocalAgent.initAgent()
-            LocalAgent.confAgent("localhost", args["gport"], 6000)
-            # AgentDNodeHoster.show()
-        
-            LocalAgent.initNetwork()
-            # LocalAgent.showMe()
-            # print(LocalAgent.getAgent().toDict())
-            ag = LocalAgent.getAgent()
-            node = ag.hosting()
         
         
         
