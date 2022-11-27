@@ -33,10 +33,11 @@ if __name__ == '__main__':
     
     LocalAgent.setMemData("args", argz)
     LocalAgent.createCrons(args.gport)
+    print("going")
     LocalAgent.launchCron("init")
     
    
-
-    server = get_server("0.0.0.0:{}".format(args.gport))
+    print("server starting")
+    server = get_server("localhost:{}".format(args.gport))
     server.start()
     server.wait_for_termination()
